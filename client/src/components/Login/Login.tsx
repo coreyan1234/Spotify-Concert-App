@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 // a code verifier is a high-entropy cryptographic random string with a length between 43 and 128 characters
 const generateRandomString = (length: number) => {
@@ -53,7 +53,7 @@ const authUrl = new URL("https://accounts.spotify.com/authorize")
 // let code = urlParams.get('code');
 
 
-// After the user accepts the authorization request of the previous step, 
+// After the user accepts the authorization request, 
 // we can exchange the authorization code for an access token
 const getToken = async (code: string) => {
 
@@ -85,8 +85,11 @@ const getToken = async (code: string) => {
 
 
 
-
-
+/**
+ * Handles user authentication. When user wants to login, they are redirected to the Spotify
+ * user authorization page. After user successfully logs in, they are then redirected
+ * to the redirect_uri
+ */
 const handleLogin = async () => {
   // Create the code verifier (this is just a randomly generated string):
   const codeVerifier = generateRandomString(64);
@@ -109,46 +112,33 @@ const handleLogin = async () => {
   // redirect to the Spotify authorization server login page by updating the window.location
   console.log("redirecting to spotify authorization window");
   window.location.href = authUrl.toString();
-
-
-  // ----------------------------------------------------------------------------------------------------------------------------------------------------
-  // Starting from here, I'm not sure if this logic should all be handled in the same function
-  // because now we are handling stuff after the user has already authenticated
-  
-
-  // parse the URL to retrieve the code parameter
-  // The code will be necessary to request the access token in the next step
-  const urlParams = new URLSearchParams(window.location.search);
-  let code = urlParams.get('code');
-
-  // we can exchange the authorization code for an access token:
-  if (code) {
-    console.log("code!")
-    getToken(code);
-  }
-  else {
-    console.log("no code");
-  }
 }
 
 
+// // Handles getting the access token
+// const getReturnedParamsFromSpotifyAuth = () => {
+//   // Parse the URL to retrieve the authorization code from the URL
+//   const urlParams = new URLSearchParams(window.location.search);
+//   let code = urlParams.get('code');
 
-
-
-
-
+//   // We can exchange the authorization code for an access token:
+//   if (code) {
+//     console.log("code!")
+//     getToken(code);
+//   }
+//   else {
+//     console.log("no code");
+//   }
+// }
 
 
 const Login = () => {
   return (
     <div>
       <h1>Login placeholder</h1>
-      {/* <p>codeVerifier: { codeVerifier }</p> */}
-      <button onClick={handleLogin}>login to spotify</button>
+      <button onClick={handleLogin}>Login to Spotify</button>
     </div>
   )
 }
-
-
 
 export default Login;
