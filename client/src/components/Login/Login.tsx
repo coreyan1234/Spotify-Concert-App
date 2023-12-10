@@ -1,5 +1,10 @@
 import React, { useEffect } from "react";
 
+const clientId = '10d5ee494b4d47ada0ff6de74a7174fa';
+const redirectUri = 'http://localhost:3000/';
+const scope = 'user-read-private user-read-email';
+const authUrl = new URL("https://accounts.spotify.com/authorize")
+
 // a code verifier is a high-entropy cryptographic random string with a length between 43 and 128 characters
 const generateRandomString = (length: number) => {
   const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -23,34 +28,6 @@ const base64encode = (input: any) => {
     .replace(/\+/g, '-')
     .replace(/\//g, '_');
 }
-
-
-// requesting user authorization
-const clientId = '10d5ee494b4d47ada0ff6de74a7174fa';
-const redirectUri = 'http://localhost:3000/';
-const scope = 'user-read-private user-read-email';
-const authUrl = new URL("https://accounts.spotify.com/authorize")
-
-// // generated in the previous step
-// window.localStorage.setItem('code_verifier', codeVerifier);
-
-// const params = {
-//   response_type: 'code',
-//   client_id: clientId,
-//   scope,
-//   code_challenge_method: 'S256',
-//   code_challenge: codeChallenge,
-//   redirect_uri: redirectUri,
-// }
-
-// // redirect to the Spotify authorization server login page by updating the window.location
-// authUrl.search = new URLSearchParams(params).toString();
-// window.location.href = authUrl.toString();
-
-// // parse the URL to retrieve the code parameter
-// // The code will be necessary to request the access token in the next step
-// const urlParams = new URLSearchParams(window.location.search);
-// let code = urlParams.get('code');
 
 
 // After the user accepts the authorization request, 
@@ -80,9 +57,6 @@ const getToken = async (code: string) => {
 
   localStorage.setItem('access_token', response.access_token);
 }
-
-
-
 
 
 /**
