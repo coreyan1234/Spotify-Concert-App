@@ -68,9 +68,10 @@ const handleLogin = async () => {
   // Create the code verifier (this is just a randomly generated string):
   const codeVerifier = generateRandomString(64);
   window.localStorage.setItem('code_verifier', codeVerifier);
+  console.log("handleLogin code verifier: ", codeVerifier);
 
   // Generate the code challenge using the code verifier:
-  const hashed = await sha256(codeVerifier)
+  const hashed = await sha256(codeVerifier!);
   const codeChallenge = base64encode(hashed);
 
   // Request authorization from the user and retrieve the authorization code:
@@ -87,23 +88,6 @@ const handleLogin = async () => {
   console.log("redirecting to spotify authorization window");
   window.location.href = authUrl.toString();
 }
-
-
-// // Handles getting the access token
-// const getReturnedParamsFromSpotifyAuth = () => {
-//   // Parse the URL to retrieve the authorization code from the URL
-//   const urlParams = new URLSearchParams(window.location.search);
-//   let code = urlParams.get('code');
-
-//   // We can exchange the authorization code for an access token:
-//   if (code) {
-//     console.log("code!")
-//     getToken(code);
-//   }
-//   else {
-//     console.log("no code");
-//   }
-// }
 
 
 const Login = () => {
